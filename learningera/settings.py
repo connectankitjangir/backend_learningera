@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import pymysql
-# pymysql.install_as_MySQLdb()  # This makes PyMySQL act as MySQLdb
+pymysql.install_as_MySQLdb()  # This makes PyMySQL act as MySQLdb
 
 
 from pathlib import Path
@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!l2ql23r)_80n18bzwqsrtt!o3yst1kk8o(huh7s9a$0-yngcx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['learningera.co.in', 'www.learningera.co.in', '127.0.0.1', '127.0.0.1:8000', '*']
 

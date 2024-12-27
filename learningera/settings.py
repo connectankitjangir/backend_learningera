@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import pymysql
-pymysql.install_as_MySQLdb()  # This makes PyMySQL act as MySQLdb
+# pymysql.install_as_MySQLdb()  # This makes PyMySQL act as MySQLdb
 
 
 from pathlib import Path
@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!l2ql23r)_80n18bzwqsrtt!o3yst1kk8o(huh7s9a$0-yngcx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['learningera.co.in', 'www.learningera.co.in', '127.0.0.1', '127.0.0.1:8000', '*']
 
@@ -108,10 +108,10 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',  # Default database for other apps
     },
-    'testseries_db': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'testseries', '2024.db'),  # Specific database for testseries app
-    }
+    # 'testseries_db': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'testseries', '2024.db'),  # Specific database for testseries app
+    # }
 }
 
 # Database router configuration

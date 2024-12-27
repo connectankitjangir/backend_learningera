@@ -24,7 +24,7 @@ urlpatterns = [
     path('ajhm/', admin.site.urls),
     # path('', views.home, name='home'),
     # path('aboutus/', views.aboutus, name='aboutus'),
-    path('api/answerkey/', include('answerkey_create.urls')),
+    path('answerkey/', include('answerkey_create.urls')),
     # path('marks-calculator/', include('answerkey_create.urls')),
     path('exam-review/', include('examreviws.urls')),
     # path('typing_tests/', include('typing_tests.urls')),
@@ -34,7 +34,7 @@ urlpatterns = [
 
    
 
-    path('submit/', include('content_updater.urls')),
+    path('content-updater/', include('content_updater.urls')),
    
 ]
 

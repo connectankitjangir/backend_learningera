@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import pymysql
-# pymysql.install_as_MySQLdb()  # This makes PyMySQL act as MySQLdb
+pymysql.install_as_MySQLdb()  # This makes PyMySQL act as MySQLdb
 
 
 from pathlib import Path

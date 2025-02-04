@@ -194,7 +194,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
    
     "https://learningera.co.in",
+    "http://learningera.co.in",
     "https://www.learningera.co.in",
+    "http://www.learningera.co.in",
     
 ]
 

@@ -3,7 +3,7 @@ from django.shortcuts import render
 from answerkey_create.models import answer_key_generator
 from django.core.cache import cache
 from content_updater.models import news_bar,our_videos
-from examreviws.models import exam_review
+from exam_reviews.models import exam_review
 # import json
 
 # import requests

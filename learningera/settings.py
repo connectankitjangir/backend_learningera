@@ -47,8 +47,10 @@ INSTALLED_APPS = [
     'content_updater',
     'answerkey_create',
     'typing_tests',
+    'ssc_results',
+    'exam_reviews'
   
-    'examreviws',
+    # 'examreviws',
    
     
    
@@ -112,10 +114,16 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'testseries', '2024.db'),  # Specific database for testseries app
     # }
+    'ssc_results_db': {  # SQLite (SSC Results Database)
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'ssc_results', 'data.db'),
+    },
+
 }
 
 # Database router configuration
-DATABASE_ROUTERS = ['db_router.TestSeriesRouter']
+# DATABASE_ROUTERS = ['db_router.TestSeriesRouter']
+DATABASE_ROUTERS = ['ssc_results.db_router.SSCResultsRouter']
 
 
 
@@ -183,15 +191,10 @@ CACHES = {
 }
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React development server
-    "http://127.0.0.1:3000",  # Alternative React local address
-    "http://localhost:5173",  # Vite React development server
-    "http://127.0.0.1:5173",
-    "https://frontend.learningera.co.in",
-    "https://www.frontend.learningera.co.in",
-    "https://backend.learningera.co.in",
+   
     "https://learningera.co.in",
     "https://www.learningera.co.in",
-    "http://192.168.1.11:5173",  # Alternative Vite React local address
+    
 ]
 
 # Allow credentials (cookies, authorization headers)

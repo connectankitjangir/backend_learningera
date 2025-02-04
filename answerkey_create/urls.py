@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.AnswerKeyGeneratorAPIView.as_view(), name='answer_key_generator_api'),
+    path('ssc-cgl-2024-answerkey/', views.SSC_CGL_2024_AnswerKeyAPIView.as_view(), name='ssc_cgl_2024_answerkey'),
     path('calculate/', views.FormAPIView.as_view(), name='answerkey form'),
     path('result/', views.ResultAPIView.as_view(), name='result'),
     # path('<str:url_slug>', views.form, name='answerkey_form'),

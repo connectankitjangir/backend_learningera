@@ -126,4 +126,16 @@ class normalized_marks_candidates_data(models.Model):
 
 
 
+class ssc_cgl_2024_answerkey(models.Model):
+    link = models.CharField(max_length=300)
+   
+    def __str__(self):
+        return self.link
+
+
+
+
+
+
+
 

@@ -26,11 +26,13 @@ urlpatterns = [
     # path('aboutus/', views.aboutus, name='aboutus'),
     path('answerkey/', include('answerkey_create.urls')),
     # path('marks-calculator/', include('answerkey_create.urls')),
-    path('exam-review/', include('examreviws.urls')),
-    # path('typing_tests/', include('typing_tests.urls')),
+    path('exam-review/', include('exam_reviews.urls')),
+    path('ssc-results/', include('ssc_results.urls')),
+    path('typing_tests/', include('typing_tests.urls')),
     # path('testseries/', include('testseries.urls')),
     #define quiz
     # path('quizzes/', include('quizzes.urls')),
+
 
    
 

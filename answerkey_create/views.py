@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from answerkey_create.models import answer_key_generator,form_video,exam_details,result_video,original_candidates_data, raw_marks_candidates_data,normalized_marks_candidates_data
+from answerkey_create.models import answer_key_generator,form_video,exam_details,result_video,original_candidates_data, raw_marks_candidates_data,normalized_marks_candidates_data,ssc_cgl_2024_answerkey
+from rest_framework import status
 import json
 import requests
 from lxml import etree
@@ -9,9 +10,11 @@ import pandas as pd
 import os
 import re
 import math
+
 from rest_framework.response import Response
 from rest_framework import generics
-from .serializers import AnswerKeySerializer
+from .serializers import AnswerKeySerializer, SSC_CGL_2024_AnswerKeySerializer
+
 from utils import (
     fetch_candidates_df,
     fetch_original_data_df,
@@ -36,8 +39,21 @@ def is_roll_number_exists_in_normalized_table(database_path, roll_number):
     conn.close()
     return exists
 
+class SSC_CGL_2024_AnswerKeyAPIView(generics.ListAPIView):
+    queryset = ssc_cgl_2024_answerkey.objects.all()
+    serializer_class = SSC_CGL_2024_AnswerKeySerializer
+
+    def post(self, request):
+        link = request.data.get("link")
+        print("link",link)
+
+        ssc_cgl_2024_answerkey.objects.create(link=link)
+        return Response({"message": "Answer key submitted successfully"})
+
 class AnswerKeyGeneratorAPIView(generics.ListAPIView):
     queryset = answer_key_generator.objects.all()
+
+
     serializer_class = AnswerKeySerializer
 
     def get(self, request, *args, **kwargs):

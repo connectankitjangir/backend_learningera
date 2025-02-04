@@ -190,7 +190,8 @@ CACHES = {
     }
 }
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React development server
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
    
     "https://learningera.co.in",
     "https://www.learningera.co.in",

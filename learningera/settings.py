@@ -114,10 +114,10 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': os.path.join(BASE_DIR, 'testseries', '2024.db'),  # Specific database for testseries app
     # }
-    'ssc_results_db': {  # SQLite (SSC Results Database)
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'ssc_results', 'data.db'),
-    },
+    # 'ssc_results_db': {  # SQLite (SSC Results Database)
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'ssc_results', 'data.db'),
+    # },
 
 }
 

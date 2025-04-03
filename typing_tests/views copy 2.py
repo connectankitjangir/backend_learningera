@@ -15,11 +15,11 @@ def split_passage(passage):
     return re.findall(r'\S+\s*', passage)
 @api_view(['POST'])
 def typing_result(request, passage_id):
-    # print('request.data', request.data)
+    print('request.data', request.data)
     passage = get_object_or_404(TypingPassage, id=passage_id)
 
     given_passage = passage.passage_text
-    # print('given_passage', given_passage)
+    print('given_passage', given_passage)
     typed_passage = request.data.get("typed_text")
     total_time = request.data.get("total_time", 0)
     
@@ -68,26 +68,6 @@ def typing_result(request, passage_id):
             omit_words_in_word = 0
             for j in range(iterator_given_passage, len(given_passage_words)):
                 if (given_passage_words[j] == typed_passage_words[i]):
-                    if omit_words_in_word > 0:
-                        if re.sub(r'[^\w\s]', '', given_passage_words[j+1]).lower().strip() == re.sub(r'[^\w\s]', '', typed_passage_words[i+1]).lower().strip():
-                            # print("inside pass phrase")
-                            matched_word_list.append(typed_passage_words[i])
-                            spelling_errors_original_list.append(given_passage_words[j])
-                            missing_words_list.append(given_passage_words[original_word_index])
-                            spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
-                            last_typed_match_index = i
-                            last_given_match_index = j
-                            iterator_given_passage += 1
-                            break
-                        # spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
-                        # spelling_errors_list.append(typed_passage_words[i])
-                        # print("outside of omit statement")
-                        # last_typed_match_index = i
-                        # last_given_match_index = j
-                        iterator_given_passage -= omit_words_in_word
-                        omit_words_in_word = 0
-                        break    
-
                     matched_word_list.append(typed_passage_words[i])
                     spelling_errors_original_list.append(given_passage_words[j])
                     missing_words_list.append(given_passage_words[original_word_index])
@@ -156,7 +136,7 @@ def typing_result(request, passage_id):
         "error_percentage": round(error_percentage, 2),
         "net_typing_speed": round(net_typing_speed, 2)
     }
-    # print('response_data', response_data)
+    print('response_data', response_data)
 
     return Response(response_data)
 

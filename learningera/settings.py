@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-!l2ql23r)_80n18bzwqsrtt!o3yst1kk8o(huh7s9a$0-yngcx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['learningera.co.in', 'www.learningera.co.in', '127.0.0.1', '127.0.0.1:8000', '*']
+ALLOWED_HOSTS = ['learningera.co.in', 'www.learningera.co.in', '127.0.0.1', '127.0.0.1:8000']
 
 
 # Application definition

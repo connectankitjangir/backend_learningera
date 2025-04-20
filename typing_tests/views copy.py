@@ -69,9 +69,7 @@ def typing_result(request, passage_id):
             for j in range(iterator_given_passage, len(given_passage_words)):
                 if (given_passage_words[j] == typed_passage_words[i]):
                     if omit_words_in_word > 0:
-                        if (j+2 < len(given_passage_words) and i+2 < len(typed_passage_words) and
-                            re.sub(r'[^\w\s]', '', given_passage_words[j+1]).lower().strip() == re.sub(r'[^\w\s]', '', typed_passage_words[i+1]).lower().strip() and 
-                            re.sub(r'[^\w\s]', '', given_passage_words[j+2]).lower().strip() == re.sub(r'[^\w\s]', '', typed_passage_words[i+2]).lower().strip()):
+                        if re.sub(r'[^\w\s]', '', given_passage_words[j+1]).lower().strip() == re.sub(r'[^\w\s]', '', typed_passage_words[i+1]).lower().strip():
                             # print("inside pass phrase")
                             matched_word_list.append(typed_passage_words[i])
                             spelling_errors_original_list.append(given_passage_words[j])

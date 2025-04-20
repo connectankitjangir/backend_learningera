@@ -174,6 +174,6 @@ def typing_test(request, passage_id):
 
 @api_view(['GET'])
 def typing_home(request):
-    passages = TypingPassage.objects.all()
+    passages = TypingPassage.objects.all().order_by('-order_id')
     serializer = TypingPassageSerializer(passages, many=True)
     return Response(serializer.data)

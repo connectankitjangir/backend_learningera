@@ -32,6 +32,7 @@ def send_result(data):
         f"Punctuation Errors: {data['punctuation_errors']}\n"
         f"Transposition Errors: {data['transposition_errors']}\n"
         f"Omission Errors: {data['omission_errors']}\n"
+        f"Total Time: {data['total_time']} seconds\n"
         f"```"
     )
 

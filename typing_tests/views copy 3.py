@@ -139,34 +139,11 @@ def typing_result(request, passage_id):
                     iterator_given_passage += 1
 
     # Calculate typing metrics
-    # typed_passage_length = len(typed_passage_words)
-    typed_passage_keystrokes = sum(len(word) for word in typed_passage_words)
-    gross_typing_speed = (typed_passage_keystrokes/5) / ((total_time)/60)
-    # total_errors = len(capital_errors_list)/2 + len(spelling_errors_list) + len(space_errors_list)/2 + len(punctuation_errors_list)/2 + len(transposition_errors_list)/4 + len(omission_errors_list)
-    # total_errors = len(capital_errors_list)/2 + len(spelling_errors_list) + len(space_errors_list)/2 + len(punctuation_errors_list)/2 + len(transposition_errors_list)/4 + len(omission_errors_list)
-    # total_keystrokes = sum(len(word) for word in typed_passage_words)
-    total_errors = (
-        len(capital_errors_list)/2 + 
-        len(spelling_errors_list) + 
-        len(space_errors_list)/2 + 
-        len(punctuation_errors_list)/2 + 
-        len(transposition_errors_list)/4 + 
-        len(omission_errors_list)
-    )
-    error_keystrokes = (
-        sum(len(word) for word in capital_errors_list) * 0.5 +
-        sum(len(word) for word in spelling_errors_list) +
-        sum(len(word) for word in space_errors_list) * 0.5 +
-        sum(len(word) for word in punctuation_errors_list) +
-        sum(len(word) for word in transposition_errors_list) * 0.25 +
-        sum(len(word) for word in omission_errors_list)
-    )
-    
-    # error_percentage = (total_errors / typed_passage_length) * 100
-    error_percentage = (error_keystrokes / typed_passage_keystrokes) * 100
-    # net_typing_speed = (typed_passage_length - total_errors) / ((total_time)/60)
-    net_typing_speed = (typed_passage_keystrokes - error_keystrokes) / 5*((total_time)/60)
-
+    typed_passage_length = len(typed_passage_words)
+    gross_typing_speed = (typed_passage_length) / ((total_time)/60)
+    total_errors = len(capital_errors_list)/2 + len(spelling_errors_list) + len(space_errors_list)/2 + len(punctuation_errors_list)/2 + len(transposition_errors_list)/4 + len(omission_errors_list)
+    error_percentage = (total_errors / typed_passage_length) * 100
+    net_typing_speed = (typed_passage_length - total_errors) / ((total_time)/60)
 
     response_data = {
         "capital_errors": capital_errors_list,
@@ -181,8 +158,7 @@ def typing_result(request, passage_id):
         "passage_id": passage_id,
         "gross_typing_speed": round(gross_typing_speed, 2),
         "error_percentage": round(error_percentage, 2),
-        "net_typing_speed": round(net_typing_speed, 2),
-        'total_time': total_time
+        "net_typing_speed": round(net_typing_speed, 2)
     }
 
     send_result(response_data)

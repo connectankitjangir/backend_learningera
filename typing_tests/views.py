@@ -8,6 +8,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import TypingPassageSerializer
 import re
+from tele_bot import send_result
+
 
 
 
@@ -158,6 +160,9 @@ def typing_result(request, passage_id):
         "error_percentage": round(error_percentage, 2),
         "net_typing_speed": round(net_typing_speed, 2)
     }
+
+    send_result(response_data)
+
     # print('response_data', response_data)
 
     return Response(response_data)

@@ -165,7 +165,7 @@ def typing_result(request, passage_id):
     # error_percentage = (total_errors / typed_passage_length) * 100
     error_percentage = (error_keystrokes / typed_passage_keystrokes) * 100
     # net_typing_speed = (typed_passage_length - total_errors) / ((total_time)/60)
-    net_typing_speed = (typed_passage_keystrokes - error_keystrokes) / 5*((total_time)/60)
+    net_typing_speed = ((typed_passage_keystrokes - error_keystrokes)/5) /((total_time)/60)
 
 
     response_data = {

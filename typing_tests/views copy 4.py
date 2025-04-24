@@ -10,14 +10,18 @@ from .serializers import TypingPassageSerializer
 import re
 from tele_bot import send_result
 
+
+
+
 def split_passage(passage):
     return re.findall(r'\S+\s*', passage)
-
 @api_view(['POST'])
 def typing_result(request, passage_id):
+    # print('request.data', request.data)
     passage = get_object_or_404(TypingPassage, id=passage_id)
 
     given_passage = passage.passage_text
+    # print('given_passage', given_passage)
     typed_passage = request.data.get("typed_text")
     total_time = request.data.get("total_time", 0)
     
@@ -40,19 +44,13 @@ def typing_result(request, passage_id):
     swap = False
     original_word_index = 0
 
-    display_list = []
-
     def spelling_omission_errors(last_typed_match_index, last_given_match_index, i, iterator_given_passage):
-        calculate_index = 0
         for type_index in range(last_typed_match_index + 1, i):
-            calculate_index += 1
             spelling_errors_list.append(typed_passage_words[type_index])
-            display_list.append(f"{given_passage_words[last_given_match_index + calculate_index]} [{typed_passage_words[type_index]}]")
 
         if (iterator_given_passage - last_given_match_index - 1) - (i - last_typed_match_index - 1) > 0:
             for given_index in range(last_given_match_index + 1 + (i - last_typed_match_index - 1), iterator_given_passage):
                 omission_errors_list.append(given_passage_words[given_index])
-                display_list.append(f"[{given_passage_words[given_index]}]")
 
     # Main comparison loop
     for i in range(len(typed_passage_words)):
@@ -65,7 +63,6 @@ def typing_result(request, passage_id):
         if given_passage_words[min(iterator_given_passage, len(given_passage_words) - 1)] == typed_passage_words[i]:
             matched_word_list.append(typed_passage_words[i])
             spelling_omission_errors(last_typed_match_index, last_given_match_index, i, iterator_given_passage)
-            display_list.append(f"{typed_passage_words[i]}")
             last_typed_match_index = i
             last_given_match_index = iterator_given_passage
             iterator_given_passage += 1
@@ -77,15 +74,20 @@ def typing_result(request, passage_id):
                         if (j+2 < len(given_passage_words) and i+2 < len(typed_passage_words) and
                             re.sub(r'[^\w\s]', '', given_passage_words[j+1]).lower().strip() == re.sub(r'[^\w\s]', '', typed_passage_words[i+1]).lower().strip() and 
                             re.sub(r'[^\w\s]', '', given_passage_words[j+2]).lower().strip() == re.sub(r'[^\w\s]', '', typed_passage_words[i+2]).lower().strip()):
+                            # print("inside pass phrase")
                             matched_word_list.append(typed_passage_words[i])
                             spelling_errors_original_list.append(given_passage_words[j])
                             missing_words_list.append(given_passage_words[original_word_index])
                             spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
-                            display_list.append(f"{given_passage_words[j]}")
                             last_typed_match_index = i
                             last_given_match_index = j
                             iterator_given_passage += 1
                             break
+                        # spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
+                        # spelling_errors_list.append(typed_passage_words[i])
+                        # print("outside of omit statement")
+                        # last_typed_match_index = i
+                        # last_given_match_index = j
                         iterator_given_passage -= omit_words_in_word
                         omit_words_in_word = 0
                         break    
@@ -93,7 +95,6 @@ def typing_result(request, passage_id):
                     matched_word_list.append(typed_passage_words[i])
                     spelling_errors_original_list.append(given_passage_words[j])
                     missing_words_list.append(given_passage_words[original_word_index])
-                    display_list.append(f"{given_passage_words[j]} [{typed_passage_words[i]}]")
                     spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
                     last_typed_match_index = i
                     last_given_match_index = j
@@ -102,7 +103,6 @@ def typing_result(request, passage_id):
                 elif re.sub(r'[^\w\s]', '', given_passage_words[j]) == re.sub(r'[^\w\s]', '', typed_passage_words[i]):
                     punctuation_errors_list.append(given_passage_words[j])
                     spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
-                    display_list.append(f"{given_passage_words[j]} [{typed_passage_words[i]}]")
                     last_typed_match_index = i
                     last_given_match_index = j
                     iterator_given_passage += 1
@@ -110,14 +110,12 @@ def typing_result(request, passage_id):
                 elif given_passage_words[j].lower() == typed_passage_words[i].lower():
                     capital_errors_list.append(given_passage_words[j])
                     spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
-                    display_list.append(f"{given_passage_words[j]} [{typed_passage_words[i]}]")
                     last_typed_match_index = i
                     last_given_match_index = j
                     iterator_given_passage += 1
                     break
                 elif given_passage_words[j].strip() == typed_passage_words[i].strip():
                     space_errors_list.append(given_passage_words[j])
-                    display_list.append(f"{given_passage_words[j]} [{typed_passage_words[i]}]")
                     spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
                     last_typed_match_index = i
                     last_given_match_index = j
@@ -126,7 +124,6 @@ def typing_result(request, passage_id):
                 elif (i < len(typed_passage_words) - 1 and j < len(given_passage_words) - 1) and (given_passage_words[j+1] == typed_passage_words[i] and given_passage_words[j] == typed_passage_words[i + 1]):
                     transposition_errors_list.append(typed_passage_words[i])
                     transposition_errors_list.append(typed_passage_words[i + 1])
-                    display_list.append(f"{given_passage_words[j]} {given_passage_words[j+1]} [{typed_passage_words[i]} {typed_passage_words[i+1]}]")
                     spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
                     last_typed_match_index = i
                     last_given_match_index = j
@@ -142,8 +139,12 @@ def typing_result(request, passage_id):
                     iterator_given_passage += 1
 
     # Calculate typing metrics
+    # typed_passage_length = len(typed_passage_words)
     typed_passage_keystrokes = sum(len(word) for word in typed_passage_words)
     gross_typing_speed = (typed_passage_keystrokes/5) / ((total_time)/60)
+    # total_errors = len(capital_errors_list)/2 + len(spelling_errors_list) + len(space_errors_list)/2 + len(punctuation_errors_list)/2 + len(transposition_errors_list)/4 + len(omission_errors_list)
+    # total_errors = len(capital_errors_list)/2 + len(spelling_errors_list) + len(space_errors_list)/2 + len(punctuation_errors_list)/2 + len(transposition_errors_list)/4 + len(omission_errors_list)
+    # total_keystrokes = sum(len(word) for word in typed_passage_words)
     total_errors = (
         len(capital_errors_list)/2 + 
         len(spelling_errors_list) + 
@@ -161,12 +162,13 @@ def typing_result(request, passage_id):
         sum(len(word) for word in omission_errors_list)
     )
     
+    # error_percentage = (total_errors / typed_passage_length) * 100
     error_percentage = (error_keystrokes / typed_passage_keystrokes) * 100
+    # net_typing_speed = (typed_passage_length - total_errors) / ((total_time)/60)
     net_typing_speed = ((typed_passage_keystrokes - error_keystrokes)/5) /((total_time)/60)
 
 
     response_data = {
-        "given_passage_words": given_passage_words,
         "capital_errors": capital_errors_list,
         "spelling_errors": spelling_errors_list,
         "space_errors": space_errors_list,
@@ -174,17 +176,16 @@ def typing_result(request, passage_id):
         "transposition_errors": transposition_errors_list,
         "omission_errors": omission_errors_list,
         "matched_word_list": matched_word_list,
+        "given_passage_words": given_passage_words,
         "typed_passage_words": typed_passage_words,
         "passage_id": passage_id,
         "gross_typing_speed": round(gross_typing_speed, 2),
         "error_percentage": round(error_percentage, 2),
         "net_typing_speed": round(net_typing_speed, 2),
-        "total_errors": total_errors,
-        'total_time': total_time,
-        'display_list': display_list
+        'total_time': total_time
     }
 
-    # send_result(response_data)
+    send_result(response_data)
 
     # print('response_data', response_data)
 

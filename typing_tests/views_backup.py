@@ -83,7 +83,7 @@ def typing_result(request, passage_id):
             for j in range(iterator_given_passage, len(given_passage_words)):
                 if (given_passage_words[j] == typed_passage_words[i]):
                     if omit_words_in_word > 0:
-                        if jumpconfirmation(j, i, given_passage_words, typed_passage_words):
+                        if jumpconfirmation(j, i, given_passage_words, typed_passage_words)
                             matched_word_list.append(typed_passage_words[i])
                             spelling_errors_original_list.append(given_passage_words[j])
                             missing_words_list.append(given_passage_words[original_word_index])
@@ -98,36 +98,17 @@ def typing_result(request, passage_id):
                         # break    
                         omit_words_in_word += 1
                         iterator_given_passage += 1
-                        continue
 
                     matched_word_list.append(typed_passage_words[i])
                     spelling_errors_original_list.append(given_passage_words[j])
                     missing_words_list.append(given_passage_words[original_word_index])
-                    spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
                     display_list.append(f"{given_passage_words[j]} [{typed_passage_words[i]}]")
+                    spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
                     last_typed_match_index = i
                     last_given_match_index = j
                     iterator_given_passage += 1
                     break
                 elif re.sub(r'[^\w\s]', '', given_passage_words[j]) == re.sub(r'[^\w\s]', '', typed_passage_words[i]):
-
-                    if omit_words_in_word > 0:
-                        print('indise transposition')
-                        if jumpconfirmation(j, i, given_passage_words, typed_passage_words):
-
-                            punctuation_errors_list.append(given_passage_words[j])
-                            spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
-                            display_list.append(f"{given_passage_words[j]} [{typed_passage_words[i]}]")
-                            last_typed_match_index = i
-                            last_given_match_index = j
-                            iterator_given_passage += 1
-                            break
-
-                        omit_words_in_word += 1
-                        iterator_given_passage += 1
-                        continue
-
-
                     punctuation_errors_list.append(given_passage_words[j])
                     spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
                     display_list.append(f"{given_passage_words[j]} [{typed_passage_words[i]}]")
@@ -136,23 +117,6 @@ def typing_result(request, passage_id):
                     iterator_given_passage += 1
                     break
                 elif given_passage_words[j].lower() == typed_passage_words[i].lower():
-                    if omit_words_in_word > 0:
-                        print('indise transposition')
-                        if jumpconfirmation(j, i, given_passage_words, typed_passage_words):
-
-                            capital_errors_list.append(given_passage_words[j])
-                            spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
-                            display_list.append(f"{given_passage_words[j]} [{typed_passage_words[i]}]")
-                            last_typed_match_index = i
-                            last_given_match_index = j
-                            iterator_given_passage += 1
-                            break
-
-                        omit_words_in_word += 1
-                        iterator_given_passage += 1
-                        continue
-
-
                     capital_errors_list.append(given_passage_words[j])
                     spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
                     display_list.append(f"{given_passage_words[j]} [{typed_passage_words[i]}]")
@@ -161,21 +125,6 @@ def typing_result(request, passage_id):
                     iterator_given_passage += 1
                     break
                 elif given_passage_words[j].strip() == typed_passage_words[i].strip():
-                    if omit_words_in_word > 0:
-                        print('indise transposition')
-                        if jumpconfirmation(j, i, given_passage_words, typed_passage_words):
-                            space_errors_list.append(given_passage_words[j])
-                            display_list.append(f"{given_passage_words[j]} [{typed_passage_words[i]}]")
-                            spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
-                            last_typed_match_index = i
-                            last_given_match_index = j
-                            iterator_given_passage += 1
-                            break
-                        omit_words_in_word += 1
-                        iterator_given_passage += 1
-                        continue
-
-
                     space_errors_list.append(given_passage_words[j])
                     display_list.append(f"{given_passage_words[j]} [{typed_passage_words[i]}]")
                     spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
@@ -184,25 +133,10 @@ def typing_result(request, passage_id):
                     iterator_given_passage += 1
                     break
                 elif (i < len(typed_passage_words) - 1 and j < len(given_passage_words) - 1) and (given_passage_words[j+1] == typed_passage_words[i] and given_passage_words[j] == typed_passage_words[i + 1]):
-                    if omit_words_in_word > 0:
-                        print('indise transposition')
-                        if jumpconfirmation(j+1, i+1, given_passage_words, typed_passage_words):
-                            transposition_errors_list.append(typed_passage_words[i])
-                            transposition_errors_list.append(typed_passage_words[i + 1])
-                            spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
-                            display_list.append(f"{given_passage_words[j]} {given_passage_words[j+1]} [{typed_passage_words[i]} {typed_passage_words[i+1]}]")
-                            last_typed_match_index = i
-                            last_given_match_index = j
-                            iterator_given_passage += 1
-                            swap = True
-                            break
-                        omit_words_in_word += 1
-                        iterator_given_passage += 1
-                        continue
                     transposition_errors_list.append(typed_passage_words[i])
                     transposition_errors_list.append(typed_passage_words[i + 1])
-                    spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
                     display_list.append(f"{given_passage_words[j]} {given_passage_words[j+1]} [{typed_passage_words[i]} {typed_passage_words[i+1]}]")
+                    spelling_omission_errors(last_typed_match_index, last_given_match_index, i, j)
                     last_typed_match_index = i
                     last_given_match_index = j
                     iterator_given_passage += 1

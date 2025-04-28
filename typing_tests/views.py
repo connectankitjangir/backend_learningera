@@ -36,6 +36,7 @@ def typing_result(request, passage_id):
     matched_word_list = []
     punctuation_errors_list = []
     space_errors_list = []
+    extra_typed_errors_list = []
     capital_errors_list = []
     omission_errors_list = []
     spelling_errors_list = []
@@ -60,7 +61,7 @@ def typing_result(request, passage_id):
 
         elif tag == 'insert':
             for idx in range(j1, j2):
-                space_errors_list.append(typed_passage_words[idx])
+                extra_typed_errors_list.append(typed_passage_words[idx])
                 display_list.append(f"[+{typed_passage_words[idx]}]")
         
         elif tag == 'replace':
@@ -100,6 +101,7 @@ def typing_result(request, passage_id):
     error_keystrokes = (
         sum(len(word) for word in capital_errors_list) * 0.5 +
         sum(len(word) for word in spelling_errors_list) +
+        sum(len(word) for word in extra_typed_errors_list) +
         sum(len(word) for word in space_errors_list) * 0.5 +
         sum(len(word) for word in punctuation_errors_list) * 0.5 +
         sum(len(word) for word in omission_errors_list)
@@ -108,6 +110,7 @@ def typing_result(request, passage_id):
     total_errors = (
         len(capital_errors_list) * 0.5 +
         len(spelling_errors_list) +
+        len(extra_typed_errors_list) +
         len(space_errors_list) * 0.5 +
         len(punctuation_errors_list) * 0.5 +
         len(omission_errors_list)
@@ -119,6 +122,7 @@ def typing_result(request, passage_id):
     response_data = {
         "capital_errors": capital_errors_list,
         "spelling_errors": spelling_errors_list,
+        "extra_typed_errors": extra_typed_errors_list,
         "space_errors": space_errors_list,
         "punctuation_errors": punctuation_errors_list,
         "omission_errors": omission_errors_list,

@@ -44,10 +44,17 @@ def typing_result(request, passage_id):
 
 
     def jumpconfirmation(j, i, given_passage_words, typed_passage_words):
-        if (j+2 < len(given_passage_words) and i+2 < len(typed_passage_words) and
-            re.sub(r'[^\w\s]', '', given_passage_words[j+1]).lower().strip() == re.sub(r'[^\w\s]', '', typed_passage_words[i+1]).lower().strip() and 
-            re.sub(r'[^\w\s]', '', given_passage_words[j+2]).lower().strip() == re.sub(r'[^\w\s]', '', typed_passage_words[i+2]).lower().strip()):
-            return True
+        # Check if the next 10 words match (after normalizing)
+        if (j+10 < len(given_passage_words) and i+10 < len(typed_passage_words)):
+            matches = 0
+            for offset in range(1, 11):  # Check next 10 words
+                if (j+offset < len(given_passage_words) and i+offset < len(typed_passage_words) and
+                    re.sub(r'[^\w\s]', '', given_passage_words[j+offset]).lower().strip() == 
+                    re.sub(r'[^\w\s]', '', typed_passage_words[i+offset]).lower().strip()):
+                    matches += 1
+            
+            # Return True if at least 7 of the next 10 words match
+            return matches >= 6
         return False
         
 

@@ -95,8 +95,7 @@ def typing_result(request, passage_id):
                     display_list.append(f"[+{typed_passage_words[idx]}]")
 
     # Typing speed calculations
-    # typed_passage_keystrokes = sum(len(word) for word in typed_passage_words)
-    typed_passage_keystrokes = len(typed_passage)
+    typed_passage_keystrokes = sum(len(word) for word in typed_passage_words)
     gross_typing_speed = (typed_passage_keystrokes/5) / (total_time/60) if total_time > 0 else 0
 
     error_keystrokes = (
